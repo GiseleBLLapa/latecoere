@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <img src="assets/imagens/logo.png" class="p-3 mb-5">
+            <h1>{{servico.linha}}</h1>
+            <img [src]="imagens[servico.linha]">
+            <ul class="list-group overflow-auto h-25 mt-5">
+                <li class="list-group-item active" (click)="servico.getLinhaGroupByPosto('CF-1')">CF-1</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('CF-3')">CF-3</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('OW')">OW<i class="fa fa-hand-o-down" aria-hidden="true"></i></li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Portas Legacy')">ELP<i class="fas fa-ellipsis-v    "></i></li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Pax Dian.')">Porta Pax Dian</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Pax Tras.')">Porta Pax Tras</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Serv. Dian.')">Porta Serv Dian</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Serv.Tras.')">Porta Serv Tras</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Bagag. Diant.E1')">Porta Bagag. Diant.E1</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Bagag. Tras.E1')">Porta Bagag. Tras.E1</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Bagag. Diant.E2')">Porta Bagag. Diant.E2</li>
+                <li class="list-group-item" (click)="servico.getLinhaGroupByPosto('Porta Bagag. Tras.E2')">Porta Bagag. Tras.E2</li>
+            </ul>
+        </div>
+
+        <div class="col-9">
+            <div class="row mt-4">
+                <div class='col-12'>Postos da linha <span class="font-weight-bold">{{servico.linha}}</span>:</div>
+                <div class="d-flex ml-3 mr-3" *ngFor="let posto of servico.postoPorLinha$ | async">
+                    <div>
+                        <div class="bd-highlight p-2 mr-1 mt-2"
+                            [ngClass]="{'bg-primary': posto.avg_fimreal_fimplan > 0, 'bg-danger': posto.avg_fimreal_fimplan < 0, 'bg-success': posto.avg_fimreal_fimplan == 0}">
+                            {{posto.posto}}</div>
+                        <div>Média: {{posto.avg_fimreal_fimplan}}</div>
+                        <div>Total: {{posto.sum_fimreal_fimplan}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="form-group ml-3">
+                    <label>Ranges da linha <span class="font-weight-bold">{{servico.linha}}</span>:</label>
+                    <select class="form-control" (change)="servico.getLinhaRangeGroupByPosto($event.target.value)">
+                        <option></option>
+                        <option *ngFor="let range of servico.rangePorLinha$ | async">{{range.range}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-4" *ngIf="servico.range != ''">
+                <div class='col-12'>Postos da linha <span class="font-weight-bold">{{servico.linha}}</span> e range
+                    <span class="font-weight-bold">{{servico.range}}</span>:</div>
+                <div class="d-flex ml-3 mr-3" *ngFor="let posto of servico.postoPorLinhaRange$ | async">
+                    <div>
+                        <div class="bd-highlight p-2 mr-1 mt-2"
+                            [ngClass]="{'bg-primary': posto.avg_fimreal_fimplan > 0, 'bg-danger': posto.avg_fimreal_fimplan < 0, 'bg-success': posto.avg_fimreal_fimplan == 0}">
+                            {{posto.posto}}</div>
+                        <div>Total: {{posto.sum_fimreal_fimplan}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
